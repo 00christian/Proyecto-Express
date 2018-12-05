@@ -4,7 +4,16 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var mongoClient = require('mongodb').MongoClient;
+var url = 'mongodb://localhost:27017';
+mongoClient.connect(url, function(err, conn ){
+  if( err ) {
+    console.log(err)
+    process.exit(1);
+  }
+  
+var db = conn.db('proyectodb_notas');
+var app = require('../app')(db);
 var debug = require('debug')('proyecto-notas:server');
 var http = require('http');
 
@@ -88,3 +97,6 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+});
+
